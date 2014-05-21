@@ -3,12 +3,11 @@ ec2drv Specific Information
 
 [mjs: updated for git and Mac OS X building]
 
-If you got the source from CVS:
+If you got the source from Git:
 -------------------------------
 
-autoreconf -i
+autoreconf -fvi
 ./configure
-autoreconf -i
 make
 make install
 

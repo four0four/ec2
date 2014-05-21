@@ -2,6 +2,7 @@ ec2drv provides Linux support for the Silicon Laboritories EC2 serial debug
 adaptor.
 
 [mjs: this fork adds Mac OS X build support]
+[mjs: merged some fixes from gson's fork]
 
 newcdb provides a new GDB like interface for ec2drv but also for the s51
 simulator.  This is more flexiable than ec2cdb / sdcdb in that it allows easy
