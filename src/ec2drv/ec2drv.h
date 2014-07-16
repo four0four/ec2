@@ -22,6 +22,7 @@
 #ifndef EC2_H
 #define EC2_H
 #include <stdint.h>
+#include <unistd.h>
 
 #ifdef __cplusplus
 extern "C" {
