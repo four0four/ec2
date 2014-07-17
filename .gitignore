@@ -1,34 +1,30 @@
-m4
-autom4te.cache
-aclocal.m4
-compile
-configure
-Makefile.in
-.deps
-.libs
-*.lo
+# Object files
 *.o
+*.ko
+*.obj
+*.elf
+
+# Libraries
+*.lib
+*.a
 *.la
-config.h
-config.log
-config.status
-doc/Makefile
-libtool
-Makefile
-src/devel-tools/playback
-src/devel-tools/sniffer
-src/ec2drv/device_enum.h
-src/ec2drv/device_table.c
-src/ec2tools/ec2-update-fw
-src/ec2tools/ec2readflash
-src/ec2tools/ec2device
-src/ec2tools/ec2readfw
-src/ec2tools/ec2test-any
-src/ec2tools/ec2writeflash
-src/ec2tools/ec3adapters
-src/newcdb/newcdb
-stamp-h1
+*.lo
 
-config.guess
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
 
-config.guess
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# vim
+*.swp
+*.swo
+*~
