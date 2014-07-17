@@ -6,23 +6,14 @@ ec2drv Specific Information
 If you got the source from Git:
 -------------------------------
 
-autoreconf -fvi
-./configure
+mkdir build; cd build
+cmake ../src
 make
 make install
 
 The make install step is not necessary for development as all
 executabless can be run from with the source tree where that were
 created.
-
-
-Source from a source tarball:
------------------------------
-
-./configure
-make
-make install
-
 
 General building notes:
 -----------------------
