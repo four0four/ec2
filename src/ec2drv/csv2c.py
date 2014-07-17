@@ -14,14 +14,11 @@ from optparse import OptionParser
 def main():
   usage = "usage: %prog [options] arg";
   parser = OptionParser(usage)
-  
   parser.add_option("-i", "--input-file", type="string", dest="infile")
   parser.add_option("-c", "--output-cfile", type="string", dest="coutfile")
   parser.add_option("-e", "--output-hfile", type="string", dest="houtfile")
   (options, args) = parser.parse_args()
-  if(len(args) == 0):
-    parser.print_help()
-    exit(-1)
+
   hfile = open(options.houtfile,"wb")
   hfile.writelines(
   "///////////////////////////////////////////////////////////////////////////////////////////////\n" \
