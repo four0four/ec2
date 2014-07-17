@@ -30,7 +30,6 @@
 #include <termios.h>		// POSIX terminal control definitions
 #include <sys/ioctl.h>
 #include "ec2drv.h"
-#include "config.h"
 #include "boot.h"
 #include "c2_mode.h"
 #include "jtag_mode.h"
