@@ -2146,17 +2146,16 @@ ready:
 	r = usb_get_string_simple(obj->ec3, ec3descr->iManufacturer, s, sizeof(s));
 	if(r<0)
 		USB_ERROR("usb_get_string_simple",r);
-//	printf("s='%s'\n",s);
 	
-#ifdef HAVE_USB_DETACH_KERNEL_DRIVER_NP
 	// On linux we force the inkernel drivers to release the device for us.	
 	// can't do too much for other platforms as this function is platform specific
 	// lets hope they don't try and claim this device.
 	// on linux "usbhid" claims the device.
+  // TODO - dynamic detection
+  // - Do we want to support !Linux? 
 	r = usb_detach_kernel_driver_np( obj->ec3, 0);
-//	if( r<0 && r!=-ENODATA )
-//		USB_ERROR("usb_detach_kernel_driver_np",r);
-#endif
+	if( r<0 && r!=-ENODATA )
+		USB_ERROR("usb_detach_kernel_driver_np",r);
 	r = usb_set_configuration( obj->ec3, 1 );
 	if(r<0)
 		USB_ERROR("usb_set_configuration",r);
