@@ -10,7 +10,6 @@ add_subdirectory(newcdb)
 
 #set(INCDIRS debug-core devel-tools ec2drv ec2tools newcdb)
 
-
 include_directories(ec2drv)
 include_directories(debug-core)
 include_directories(devel-tools)

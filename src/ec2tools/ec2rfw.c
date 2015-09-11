@@ -13,7 +13,9 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <signal.h>
+
 #include "ec2drv.h"
+#include "boot.h"
 
 #define BUFLEN 512	/* Use sector size */
 

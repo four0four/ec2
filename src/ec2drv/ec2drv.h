@@ -23,13 +23,14 @@
 #define EC2_H
 #include <stdint.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 #include "ec2types.h"
 	
-//#define FUNC_TRACE
+#define FUNC_TRACE
 #ifdef FUNC_TRACE
 #define DUMP_FUNC()		printf("Function = %s\n",__PRETTY_FUNCTION__ );
 #define DUMP_FUNC_END()	printf("End Function = %s\n",__PRETTY_FUNCTION__ );
@@ -60,7 +61,7 @@ typedef struct
 	int				fd;				///< file descriptor for com port
 	uint8_t			bp_flags;		///< mirror of EC2 breakpoint byte
 	uint32_t		bpaddr[4];		///< breakpoint addresses
-	struct usb_dev_handle	*ec3;	
+	struct libusb_device_handle	*ec3;	
 	DBG_ADAPTER_INFO	*dbg_info;	///< Information about the partucular debugger, flags etc
 } EC2DRV;
 

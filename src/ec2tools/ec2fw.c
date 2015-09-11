@@ -8,7 +8,9 @@
 #include <unistd.h>
 #include <signal.h>
 #include <getopt.h>
+
 #include "ec2drv.h"
+#include "boot.h"
 
 #ifdef _SYS_SIGNAL_H_ 
 /* This appears to be a BSD variant which also uses a different type name */ 
