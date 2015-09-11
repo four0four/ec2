@@ -39,7 +39,7 @@
 #include <sys/ioctl.h>
 
 #define MAJOR_VER 0
-#define MINOR_VER 5
+#define MINOR_VER 7
 
 
 /** Retrieve the ec2drv library version
@@ -305,25 +305,20 @@ BOOL ec2_connect_fw_update( EC2DRV *obj, char *port )
 	obj->progress_cbk = 0;
 	if( strncmp(port,"USB",3)==0 )
 	{
-    printf("1\n");
 		// USB mode, EC3
 		obj->dbg_adaptor = EC3;
 		if( port[3]==':' )
 		{
-      printf("2\n");
 			// get the rest of the string
 			port = port+4;	// point to the remainder ( hopefully the serial number of the adaptor )
 		}
 		else if( strlen(port)==3 )
 		{
-      printf("%s\n", port);
-      printf("3\n");
 			port = 0;
 		}
 		else{
-      printf("D:");
 			return FALSE;
-      }
+    }
 	}
 	else
 		obj->dbg_adaptor = EC2;
@@ -331,8 +326,7 @@ BOOL ec2_connect_fw_update( EC2DRV *obj, char *port )
 	
 	if( !open_port( obj, port) )
 	{
-    printf("D:");
-		printf("Coulden't connect to %s\n", obj->dbg_adaptor==EC2 ? "EC2" : "EC3");
+		printf("Couldn't connect to %s\n", obj->dbg_adaptor==EC2 ? "EC2" : "EC3");
 		return FALSE;
 	}
 	if(obj->dbg_adaptor==EC2)
@@ -1975,10 +1969,10 @@ static BOOL write_usb( EC2DRV *obj, char *buf, int len )
 		print_buf(txbuf,len+1);
 	}
 	
-	r = libusb_interrupt_transfer(obj->ec3,
+	r = libusb_bulk_transfer(obj->ec3,
 							obj->dbg_info->usb_out_endpoint,
 							txbuf, len + 1, &wrote, 1000 );
-  printf("DEBUG: wrote %d bytes\n", wrote);
+  // printf("DEBUG: wrote %d bytes\n", wrote);
 	
 	if(r<0)
 		USB_ERROR("libusb_interrupt_write",r);
@@ -2014,11 +2008,11 @@ static BOOL read_usb( EC2DRV *obj, char *buf, int len )
 	int r;
   int wrote = 0;
 	char *rxbuf = malloc( 64 );
-	r = libusb_interrupt_transfer( obj->ec3,
+	r = libusb_bulk_transfer( obj->ec3,
 							obj->dbg_info->usb_in_endpoint,
 							rxbuf, 64, &wrote, 8000 );	// 8 second timeout.
 
-  printf("DEBUG: read %d bytes\n", wrote);
+//  printf("DEBUG: read %d bytes\n", wrote);
 
 	if( obj->debug )
 	{
@@ -2083,7 +2077,7 @@ BOOL open_ec3( EC2DRV *obj, const char *port )
     }
     // go see if we know this vid/pid, and if so what adapter corresponds
     dbg_info = ec2_GetDbgInfo(desc.idVendor, desc.idProduct);
-    printf("trying %x, %x\n", desc.idVendor, desc.idProduct);
+    // printf("trying %x, %x\n", desc.idVendor, desc.idProduct);
     // got one!
     if(dbg_info) {
       if( port==0 )
@@ -2122,9 +2116,13 @@ ready:
 
 
   // finalize our claim
-	r = libusb_detach_kernel_driver( obj->ec3, 0);
-	if( r<0 && r!=-ENODATA )
-		USB_ERROR("usb_detach_kernel_driver_np",r);
+  if(libusb_kernel_driver_active(obj->ec3, 0)) {
+    printf("detaching kernel driver...");
+    r = libusb_detach_kernel_driver( obj->ec3, 0);
+    if( r<0 && r!=-ENODATA )
+      USB_ERROR("usb_detach_kernel_driver_np",r);
+    printf("done.\n");
+  }
 
 	r = libusb_set_configuration( obj->ec3, 1 );
 	if(r<0)
@@ -2142,11 +2140,9 @@ void close_ec3( EC2DRV *obj )
 {
 	DUMP_FUNC();
 	int r;
-#ifdef HAVE_USB_DETACH_KERNEL_DRIVER_NP
-	r = usb_detach_kernel_driver_np( obj->ec3, 0);
+  r = libusb_attach_kernel_driver(obj->ec3, 0);
 	if(r<0)
 		USB_ERROR("usb_detach_kernel_driver_np",r);
-#endif
 	r = libusb_release_interface( obj->ec3, 0 );
 	if(r<0)
 		USB_ERROR("usb_release_interface",r);
@@ -2176,8 +2172,9 @@ DBG_ADAPTER_INFO *ec2_GetDbgInfo( uint16_t usb_vendor_id,
 			return &debugger_info[i];
 		}
 		else{
-			printf("ec2_GetDbgInfo(0x%04x,0x%04x)  NOT a Debugger\n",
-					usb_vendor_id,usb_product_id);
+			// printf("ec2_GetDbgInfo(0x%04x,0x%04x)  NOT a Debugger\n",
+			//		usb_vendor_id,usb_product_id);
+      continue;
     }
 	}
 	return 0;	// not found

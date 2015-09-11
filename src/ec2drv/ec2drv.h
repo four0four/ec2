@@ -30,7 +30,7 @@ extern "C" {
 #endif
 #include "ec2types.h"
 	
-#define FUNC_TRACE
+//#define FUNC_TRACE
 #ifdef FUNC_TRACE
 #define DUMP_FUNC()		printf("Function = %s\n",__PRETTY_FUNCTION__ );
 #define DUMP_FUNC_END()	printf("End Function = %s\n",__PRETTY_FUNCTION__ );
