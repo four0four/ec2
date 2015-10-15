@@ -28,3 +28,9 @@
 *.swp
 *.swo
 *~
+
+# cscope
+cscope.*
+
+# builds
+build/
